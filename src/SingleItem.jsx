@@ -1,25 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import customFetch from './utils'
+import { useDeleteTask, useEditTask } from './assets/hooks/reactQueryCustomHooks'
 
 const SingleItem = ({ item }) => {
-  const queryClient = useQueryClient()
-  const { mutate: editTask } = useMutation({
-    mutationFn: async ({ taskId, isDone }) => {
-      return customFetch.patch(`/${taskId}`, { isDone })
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['tasks'])
-    },
-  })
-
-  const { mutate: deleteTask } = useMutation({
-    mutationFn: async (taskId) => {
-      return customFetch.delete(`/${taskId}`)
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['tasks'])
-    },
-  })
+  const { editTask } = useEditTask()
+  const { deleteTask } = useDeleteTask()
 
   return (
     <div className='single-item'>
